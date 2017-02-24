@@ -77,8 +77,8 @@ HTMLWidgets.widget({
         }
 
         var color_link = function color_link(d){
-          if (d.group){
-            return color(d.group.replace(/ .*/, ""));
+          if (d.source.group){
+            return color(d.source.group.replace(/ .*/, ""));
           } else {
             return "#000000";
           }
@@ -88,7 +88,7 @@ HTMLWidgets.widget({
           if (d.group){
             return 0.7;
           } else {
-            return 0.2;
+            return 0.8;
           }
         }
 
@@ -123,14 +123,16 @@ HTMLWidgets.widget({
             .enter().append("path")
             .attr("class", "link")
             .attr("d", path)
-            .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+            .style("stroke-width", function(d) { return Math.max(0, d.dy); })
             .style("fill", "none")
             .style("stroke", color_link)
             .style("stroke-opacity", opacity_link)
             .sort(function(a, b) { return b.dy - a.dy; })
             .on("mouseover", function(d) {
                 d3.select(this)
-                .style("stroke-opacity", function(d){return opacity_link(d) + 0.3});
+                .style("stroke-opacity", function(d){
+                    return Math.min(opacity_link(d) + 0.3, 1);
+                });
             })
             .on("mouseout", function(d) {
                 d3.select(this)
